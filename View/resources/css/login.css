@@ -1,0 +1,76 @@
+/* CSS login Document */
+html,
+body {
+	margin:0;
+	padding:0;
+	height:100%;
+    font-family:"微软雅黑 UI",Verdana,"宋体";
+}
+.wrapper {
+	min-height:100%;
+	position:relative;
+}
+p{
+	font-family:"微软雅黑 UI",Verdana,"宋体";
+	font-size: 12px;
+	color:#666666;
+}
+a:link{
+	text-decoration: none;
+}
+a:hover p{
+	color:#991414;
+}
+.header{
+	height:300px;
+	background-image:url(../img/register_bkg.png);
+	background-repeat:repeat-x;
+	background-size:100% 300px;
+	/*background:#991414;*/
+	margin:0px;
+}
+
+.banner{
+	width:311px !important;
+	height:126px !important;
+	diplay:block !important;
+	margin-left:auto !important;
+	margin-right:auto !important;
+	padding-top:174px !important;
+}
+.banner>img{
+    margin-left:auto; margin-right:auto;
+}
+
+.main_content{
+	display:block;
+}
+.login{
+	padding:70px 20px;
+}
+.form-horizontal .controls {
+    margin-left: 0px !important;
+}
+.tooltip.left {
+    margin-left: -10px !important;
+}
+.footer{
+	display:block;
+	width:100%;
+	bottom:20px;
+	left:0;
+	position:absolute;
+	height:60px;
+}
+.copyright{
+	width:450px;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+}
+.copyright p{
+	padding:0;
+	margin:0;
+}
+

@@ -1,0 +1,89 @@
+/* CSS login Document */
+html,
+body {
+	margin:0;
+	padding:0;
+	height:100%;
+	width:100%;
+    font-family:"微软雅黑 UI",Verdana,"宋体";
+}
+.wrapper {
+	min-height:100%;
+	position:relative;
+}
+p{
+	font-size:12px;
+	color:#666666;
+}
+h3{
+	font-size:16px;
+	color:#333;
+	display:inline;
+}
+h4{
+	font-size:14px;
+	color:#333;
+	display:inline;
+}
+h5{
+	display:inline;
+}
+h6{
+	display:inline;
+	color:#666666 !important;
+}
+
+a:link{
+	text-decoration: none;
+}
+a:hover p{
+	color:#991414;
+	text-decoration:none;
+}
+.header{
+	height:200px;
+	background-image:url(../img/register_bkg.png);
+	background-repeat:repeat-x;
+	background-size:100% 200px;
+	margin:0px;
+	width: 100%;
+	position: fixed;
+	z-index: 999;
+}
+
+.main_content{
+	display:block;
+	left:0;
+	top:50px;
+	height:auto;
+	width:900px;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top: 210px;
+	min-height:500px;
+}
+
+
+/*-----------content--------ends----------------------------*/
+/*-----------footer--------starts----------------------------*/
+.footer{
+	display:block;
+	width:100%;
+	left:0;
+	height:80px;
+	margin:20px 0;
+}
+.copyright{
+	width:450px;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+}
+.copyright p{
+	padding:0;
+	margin:0;
+}
+/*-----------footer--------ends----------------------------*/
+
+

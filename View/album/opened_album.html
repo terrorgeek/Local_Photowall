@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	
+	
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+	<script src="../../View/resources/js/validation.js"></script>
+	<script src="../../View/resources/js/jquery.js"></script>
+	<script type="text/javascript" src="../../Controller/resources/JQuery_Plugins/ajax_form/jquery.form.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../View/resources/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../View/resources/css/bootstrap-responsive.css">
+    <script type="text/javascript" src="../../View/resources/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../View/resources/js/bootstrap-tab.js"></script>
+    <script type="text/javascript" src="../../View/resources/js/camera/photowall.js"></script> 
+    <script type="text/javascript" src="../../View/resources/js/directly_at_friends/at_friends.js"></script>
+
+    <script>
+    
+		$(document).ready(function(){
+			$(".postToFriend").mention({
+            users:{#$users#}
+            });
+			$(":text").each(function(){
+				$(this).val("");
+			});
+			$(":password").val("");
+		});
+        function delete_photo_from_DB(photo_id,photo_name)
+        {
+        	$.ajax({
+              type: "POST",
+              url: "../photo/delete_photo_action.php",
+              data: { photo_id:photo_id,photo_name:photo_name,from_db:"yes" }
+            }).done(function( msg ) {
+               $("#comment-box").html(msg);
+            });
+        }
+	</script>
+    <!--show hide buttons
+    <script>
+    $(document).ready(function(show_hide) {
+        $('.user_info').mouseenter(function() {$('.list_action',this).removeClass("hideV").addClass("showV")});
+        $('.user_info').mouseleave(function() {$('.list_action',this).removeClass("showV").addClass("hideV")});
+    });
+    </script>-->
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Photowall-我的展示墙</title>
+<script type="text/javascript" src="../../View/resources/js/search.js"></script>
+<link rel="stylesheet" type="text/css" href="../../View/resources/css/follow.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        <!--nav bar starts-->
+        <div id="nav_bar">
+            <div class="banner">
+                <div id="page_name"><p>我的展示墙</p><br /><p>SHOW WALL</p></div>
+                <img class="logo" src="../../View/resources/img/logo_login.png" width="270px" height="108px" alt="photowall" longdesc="http://www.photowall.cc">
+            </div>
+            <ul id="nav">
+                <li><a href="../home/home.php" style="width:20px;"><i class="icon-home"></i></a></li>
+                <li class="current"><a href="#">我的墙</a>
+                    <ul>
+                        <li><a href="../album/show_album.php">展示墙</a>
+                        </li>
+                        <li><a href="#">贴友墙</a></li>
+                    </ul>
+                </li>
+                <li><a href="../relation/profile_people.php?see_what=null">贴友薄</a>
+                    <ul>
+                        <li><a href="../relation/profile_people.php?see_what=friends">我的贴友</a></li>
+                        <li><a href="../relation/profile_people.php?see_what=concerns">我的关注</a></li>
+                        <li><a href="../relation/profile_people.php?see_what=fans">我的粉丝</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">个人资料</a>
+                    <ul>
+                        <li><a href="../profile/profile_form.php">详细资料</a></li>
+                        <li><a href="#">个人头像</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">设置中心</a>
+                    <ul>
+                        <li><a href="#">账号</a></li>
+                        <li><a href="#">安全</a></li>
+                        <li><a href="#">隐私</a></li>
+                        <li><a href="#">绑定</a></li>
+                    </ul>
+                </li>
+                <li style="width:250px; height:34px;">
+                    <form action="../home/search_result.php" method="get">
+                <div id="search-area">
+                    <input name="keyword" type="text" size="30" class="search" id="inputSearch" placeholder="搜索-贴友/粉丝/关注" />
+                    <div id="divResult">
+                    </div>
+                    <button type="submit" class="btn btn-nav right" value="submit"><i class="icon-search"></i></button>
+                </div>
+                </form>
+                </li>
+                <li class="current">
+                    <a href="#photoUploadOption" data-toggle="modal" style="width:15px; margin-left:30px;"><i class="icon-camera icon-white"></i></a>
+                </li>
+            </ul>
+        </div>
+        <!--nav bar ends-->
+    </div>
+    <div class="main_content">
+    <div class="list">
+    	<input type="hidden" id="photo_amount" value="{#$photo_amount#}"  />
+    	<div class="album-path"><h3>我的相册 <i class="icon-arrow-right"></i>{#$album_name#}</h3></div>
+    	<input type="hidden" name="all_photo_names" value="{#$all_photo_names#}" id="all_photo_names" />
+        <input type="hidden" name="all_photo_ids" value="{#$all_photo_ids#}" id="all_photo_ids" />
+        <a href="#uploadModal" class="btn" data-toggle="modal"><i class="icon-upload"></i> <span class="text-error">上传照片</span></a>
+        <a href="#newAlbumModal" class="btn" data-toggle="modal"><i class="icon-plus"></i> <span class="text-error">新建相册</span></a>
+        <div class="line_holder"></div>
+        <hr class="hr"/>
+    	<ul>
+            <!-- <li class="user_info">
+                <div class="img-large">
+                    <a href="#myModal" class="no-link" data-toggle="modal">
+                        <img onclick="see_single_photo(this);" src="../../View/resources/img/photos/car.jpg" class="img-polaroid img-large"/>
+                    </a>
+                </div>
+                <p onclick="window.location='http://google.com' ">照片名</p>
+                <div class="list_action hideV">
+                    <div class="list_action_button" onclick=" ">
+                        <p>重命名</p>
+                    </div>
+                    <div class="list_action_button" onclick="" >
+                        <p>删除</p>
+                    </div>
+                </div>
+            </li> -->
+            {#section name=photo loop=$photo_2d_array#}
+            <li class="user_info">
+               <div class="img-display-large img-polaroid" onclick='see_single_photo("{#$photo_2d_array[photo].photo_id#}","{#$photo_2d_array[photo].photo_name#}","{#$photo_amount#}")'>
+                    <a href="#myModal" class="no-link img-large" data-toggle="modal" style="background-image: url({#$photo_2d_array[photo].photo_path_display#});">
+                       <!--  <img  src="{#$photo_2d_array[photo].photo_path#}" class="img-polaroid img-large"/> -->
+                    </a>
+                </div>
+                <p onclick="window.location='http://google.com' ">照片名</p>
+                <div class="list_action hideV">
+                    <div class="list_action_button" onclick="">
+                        <p>重命名</p>
+                    </div>
+                    <div class="list_action_button" onclick="delete_photo_from_DB('{#$photo_2d_array[photo].photo_id#}','{#$photo_2d_array[photo].photo_name#}')" >
+                        <p>删除</p>
+                    </div>
+                </div>
+              </li>
+             {#/section#}
+       </ul>
+    </div>
+	</div><!--main_content ends-->
+    <div class="footer">
+    	<div class="copyright">
+        	<p>Copyright© 2012-2022 Photowall Inc, All Rights Reserved.</p>
+            <p>照片墙 版权所有</p>
+            <a href="http://www.tangerteq.com"><p>Powered by Tanger TEQ LLC.</p></a>
+        </div>
+    </div><!--footer ends-->
+</div>
+<div id="myModal" class="modal hide fade " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="cancel_upload();">×</button>
+        <h4 id="myModalLabel" ><span id="photo_original_name">冰天雪地</span><span id="photo_flow">(3/15)</span></h4>
+    </div>
+    <div class="modal-body photo-popup">
+        <div class="row-fluid">
+            <div class="span12 img-box">
+                <img id="photo_for_comment_display" class="img-polaroid img-orig" width="600" src="../../View/resources/img/photos/snow-covered-trees.jpg" />
+                <p></p>
+                <p class="no-space" id="description">郊外美丽的雪景，一片银白</p>
+                <hr />
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span8">
+                <form class="form-inline" id="photo_comment_form" action="../comment/add_photo_comment.php" method="post">
+                    <input type="text" style="width:290px;" placeholder="评论此照片" id="comment" name="comment">
+                    <input type="hidden" id="photo_id_for_comment" name="photo_id_for_comment" value="" />
+                    
+                    <input type="hidden" id="user_id_of_this_photo" name="user_id_of_this_photo" value="" />
+                    <input type="hidden" id="username_of_this_photo" name="username_of_this_photo" value="" />
+                    <input type="hidden" id="target_user_id" name="target_user_id" value="" />
+                    <input type="hidden" id="target_username" name="target_username" value="" />
+                    <input type="hidden" name="cut" id="cut" value="no" />
+                    
+                    <p class="carousel-control left" onclick="see_prev_photo()" data-slide="prev">‹</p>
+                    <p class="carousel-control right" onclick="see_next_photo()" data-slide="next">›</p>
+                    <input type="hidden" name="see_flag" id="see_flag" value="see_normal" />
+                    
+                    <label><sub class="muted">还可输入<span id="replyInputLimiter"></span>字</sub></label>
+                    <button type="button" class="btn btn-small" onclick="send_comment()">发表</button>
+                </form>
+                <div class="row-fluid" id="comment-box">
+                    <div class="row-fluid"><!--single comment starts-->
+                        <div class="span1">
+                            <img class="img-small" src="../../View/resources/img/follower/profile_img_test1.png" alt="id-3223-profile-img" >
+                        </div>
+                        <div class="span10">
+                            <p><a class="user-name" href="#">阿Y</a> 回复<a class="user-name" href="#">ANGLED1</a>: 哈哈，是啊，景色确实很好啊！</p>
+                            <p class="muted"><sub>2013-3-29 22:20</sub></p>
+                            <hr class="no-space"/>
+                        </div>
+                        <div class="span1">
+                            <a href="#"><p>回复</p></a>
+                        </div>
+                    </div><!--single comment ends-->
+                    <div class="row-fluid"><!--single comment starts-->
+                        <div class="span1">
+                            <img class="img-small" src="../../View/resources/img/follower/profile_img_test1.png" alt="id-3223-profile-img" >
+                        </div>
+                        <div class="span10">
+                            <p><a class="user-name" href="#">ANGLED1</a>: 下雪了啊 很漂亮啊。这是在哪里？是在你那边吗？过一阵我过去还能看得到么？</p>
+                            <p class="muted"><sub>2013-3-22 14:20</sub></p>
+                            <hr class="no-space"/>
+                        </div>
+                        <div class="span1">
+                            <a href="#"><p>回复</p></a>
+                        </div>
+                    </div><!--single comment ends-->
+                    <div class="row-fluid"><!--single comment starts-->
+                        <div class="span1">
+                            <img class="img-small" src="../../View/resources/img/follower/profile_img_test1.png" alt="id-3223-profile-img" >
+                        </div>
+                        <div class="span10">
+                            <p><a class="user-name" href="#">刘嘉阳</a>: 这是哪里啊？这个季节还有雪。</p>
+                            <p class="muted"><sub>2013-3-21 05:10</sub></p>
+                            <hr class="no-space"/>
+                        </div>
+                        <div class="span1">
+                            <a href="#"><p>回复</p></a>
+                        </div>
+                    </div><!--single comment ends-->
+                </div>
+            </div>
+            <div class="span4" id="img-preview">
+                <div class="row-fluid"><a class="offset11 no-space" id="load-pre-imgs" href="#"><i class="icon-chevron-up"></i></a></div>
+                <div class="row-fluid photo-preview-row">
+                    <div class="span4" id="preview-img1"><img src="../../View/resources/img/photos/thumbnails/beauty_thumbnails.jpg" /></div>
+                    <div class="span4" id="preview-img2"><img src="../../View/resources/img/photos/thumbnails/bird_thumbnails.jpg" /></div>
+                    <div class="span4" id="preview-img3"><img src="../../View/resources/img/photos/thumbnails/car_thumbnails.jpg" /></div>
+                </div>
+                <div class="row-fluid photo-preview-row">
+                    <div class="span4" id="preview-img4"><img src="../../View/resources/img/photos/thumbnails/child_thumbnails.jpg" /></div>
+                    <div class="span4" id="preview-img5"><img src="../../View/resources/img/photos/thumbnails/disney_thumbnails.jpg" /></div>
+                    <div class="span4" id="preview-img6"><img src="../../View/resources/img/photos/thumbnails/flower_thumbnails.jpg" /></div>
+                </div>
+                <div class="row-fluid photo-preview-row">
+                    <div class="span4" id="preview-img7"><img src="../../View/resources/img/photos/thumbnails/horse_thumbnails.jpg" /></div>
+                    <div class="span4" id="preview-img8"><img src="../../View/resources/img/photos/thumbnails/lake_thumbnails.jpg" /></div>
+                    <div class="span4" id="preview-img9"><img src="../../View/resources/img/photos/thumbnails/plane_thumbnails.jpg" /></div>
+                </div>
+                <div class="row-fluid"><a class="offset11 no-space" id="load-next-imgs" href="#"><i class="icon-chevron-down"></i></a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Photo Two options-->
+<div id="photoUploadOption" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-footer row-fluid">
+        <div class="span4">
+            <a href="#atFriendModal" class="span12 btn btn-large btn-primary" data-dismiss="modal" aria-hidden="true" data-toggle="modal">贴给贴友</a>
+        </div>
+        <div class="span4 text-center">
+            <a href="#" class="span12 btn btn-large disabled"><i class="icon-arrow-left"></i> 上传照片 <i class="icon-arrow-right"></i></a>
+        </div>
+        <div class="span4">
+            <a href="#uploadModal" class="span12 btn btn-large btn-primary" data-dismiss="modal" aria-hidden="true" data-toggle="modal">存至相册</a>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Photo Upload and @ Friends-->
+<div id="atFriendModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4><i class="icon-camera icon-white"></i> 上传照片 贴给贴友</h4>
+    </div>
+    <form action="../photo/store_photo_to_DB_at_friends.php" method="post" id="upload_final1" >
+        <div class="modal-body photo-upload-container" id="modal_body1" >
+
+            <!--  <div class="upload-img">
+                 <img src="../../View/resources/img/follower/profile_img_test1.png" class="img-polaroid img-large"/>
+                 <div class="upload-descript-box">
+                     <span class="descript-arrow"></span>
+                     <i class="icon-remove upload-remove-img" onclick="removeImg()" title="删除"></i></a>
+                     <textarea placeholder="添加描述" maxlength="240" class="upload-descript-content"></textarea>
+                 </div>
+             </div> -->
+
+        </div>
+        <div class="modal-footer row-fluid photo-upload-footer">
+            <div class="row-fluid" style="margin-top:10px;">
+                <div class="span4">
+                    <div class="control-group no-space">
+                        <label class="control-label span6">贴给指定贴友</label>
+                        <div class="controls span6">
+                            <input type="text" class="postToFriend" class="input-small" name="mark_textbox" id="mark_textbox" />
+                        </div>
+                    </div>
+                    <div class="control-group no-space">
+                        <label class="control-label span6" for="postToTag">贴给标签分组</label>
+                        <div class="controls span6">
+                            <select id="postToTagAtFriend" name="postToTagAtFriend" class="input-small">
+                                <option value="food">美食</option> <!--load groups names and id to this select-->
+                                <option value="view">风景</option>
+                                <option value="soccer">足球</option>
+                                <option value="basketball">篮球</option>
+                                <option value="girls">美女</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group no-space">
+                        <label class="control-label span6" for="postToAllAtFriend">贴给所有粉丝</label>
+                        <div class="controls span6">
+                            <select id="postToAllAtFriend" name="postToAllAtFriend" class="input-small">
+                                <option value="yes">是</option>
+                                <option value="no" selected="selected">否</option>
+                            </select>
+                        </div>
+<!--                         选择相册:&nbsp;&nbsp;&nbsp;&nbsp;
+                        <select class="span7" name="album_id" id="album_id">
+                            {#$album_html#}
+                        </select> -->
+                    </div>
+                </div>
+                <div class="span6 offset2">
+                    <div class="single-photo-descript-box">
+                        <span class="descript-arrow"></span>
+                        <textarea placeholder="添加描述" col="50" row="8" class="upload-descript-content" name="marked_description"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span3 offset4">
+                    <p style="font-size:10px;">按住Ctrl键可多选照片<br/>每次最多上传5张照片</p>
+                </div>
+                <a href="#" class="btn btn-large" onclick='imgUploadAtFriend();'>选择照片</a>
+                <a href="#" class="btn btn-large btn-primary" onclick='javascript:finish_mark_and_upload();'>完成上传</a>
+
+    </form>
+    <form action="../photo/add_photo_to_at_friends_action.php" method="post" enctype="multipart/form-data" id="selectImgAtFriend_form" >
+        <!--   <a href="#" class="btn btn-large">选择照片</a> -->
+        <input type="file" name="selectImgAtFriend[]" id="selectImgAtFriend" multiple="multiple" class="hide" />  <!--change id of upload to Album to "selectImgToAlbum"-->
+    </form>
+</div>
+</div>
+</div>
+
+<!-- Modal Photo Upload to Album-->
+<div id="uploadModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="give_up()">×</button>
+        <h4><i class="icon-camera icon-white"></i> 上传照片 存至相册</h4>
+    </div>
+    <form action="../photo/store_photo_to_DB_album.php" method="post" id="upload_final" >
+        <div class="modal-body photo-upload-container" id="modal_body">
+            <!-- 这里存放动态上传的照片 -->
+        </div>
+        <div class="modal-footer row-fluid photo-upload-footer">
+            <div class="span5">
+                <div class="row-fluid" style="padding-top: 7px;">
+                    <a href="#newAlbumModal" data-toggle="modal"><h4 class="text-error span5" style="line-height:10px;">+ 新建相册</h4></a>
+                    <select class="span7" name="album_id" id="album_id">
+                        {#$album_html#}
+                    </select>
+                </div>
+            </div>
+            <div class="span7">
+                <div class="span4">
+                    <p style="font-size:10px;">按住Ctrl键可多选照片<br/>每次最多上传100张照片</p>
+                </div>
+                <a href="#" class="btn btn-large" onclick='imgUploadToAlbum();'>选择照片</a>
+                <a href="#" class="btn btn-large btn-primary" onclick='javascript:finish_upload_photo();'>完成上传</a>
+    </form>
+    <form action="../photo/add_photo_to_album.php" method="post" enctype="multipart/form-data" id="upload_photo_form" >
+        <!-- <form action="../photo/multi_file_upload_action.php" method="post" enctype="multipart/form-data" id="upload_photo_form" > -->
+        <!--   <a href="#" class="btn btn-large">选择照片</a> -->
+        <input type="hidden" id="MAX_FILE_SIZE" name="MAX_FILE_SIZE" value="10000000" />
+        <input type="file" id="selectImgToAlbum" name="selectImgToAlbum[]" multiple="multiple" style="display: none;"/>
+    </form>
+</div>
+</div>
+</div>
+
+
+<!-- Modal Photo New Album-->
+<div id="newAlbumModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4><i class="icon-plus icon-white"></i> 新建相册</h4>
+    </div>
+    <form class="form-horizontal" id="create_album" method="post" action="../album/add_album_action.php">
+        <div class="modal-body new-album-container row-fluid">
+            <div class="span6 offset3">
+                <div class="control-group">
+                    <label class="control-label" for="albumName">相册名称</label>
+                    <div class="controls">
+                        <input type="text" id="albumName" placeholder="新相册" name="albumName">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="albumPrivacy">阅览权限</label>
+                    <div class="controls">
+                        <select id="albumPrivacy" name="albumPrivacy">
+                            <option value="albumPrivacy-everyone">所有人可见</option>
+                            <option value="albumPrivacy-friend">贴友可见</option>
+                            <option value="albumPrivacy-follow">关注可见</option>
+                            <option value="albumPrivacy-fans">粉丝可见</option>
+                            <option value="albumPrivacy-self">只自己可见</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="albumDiscription">相册简介</label>
+                    <div class="controls">
+                        <textarea type="password" id="albumDiscription" placeholder="填写相册简介..." name="albumDiscription"></textarea>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="albumPassword">设定密码</label>
+                    <div class="controls">
+                        <input type="password" id="albumPassword" name="albumPassword" placeholder="选填">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn btn-large" data-dismiss="modal" aria-hidden="true">取消新建</a>
+            <button type="button" class="btn btn-large btn-primary" onclick="create_album();">完成新建</button>
+        </div>
+    </form>
+</div>
+
+<!-- Modal Photo New Single Photo-->
+<div id="newSinglePhotoModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4><i class="icon-camera icon-white"></i> 贴照设定</h4>
+    </div>
+    <div class="modal-body new-single-photo-container">
+        <div class="img-box">
+            <img class="img-polaroid img-orig" src="../../View/resources/img/photos/snow-covered-trees.jpg" id="at_people" />
+        </div>
+        <form class="form-horizontal">
+            <div class="row-fluid" style="margin-top:10px;">
+                <div class="span4">
+                    <div class="control-group no-space">
+                        <label class="control-label span6">贴给指定贴友</label>
+                        <div class="controls span6">
+                            <input type="text" class="postToFriend" class="input-small" id="postToFriend" name="postToFriend" />
+                        </div>
+                    </div>
+                    <div class="control-group no-space">
+                        <label class="control-label span6" for="postToTag">贴给标签分组</label>
+                        <div class="controls span6">
+                            <select id="postToTag" class="input-small">
+                                <option value="food">美食</option> <!--load groups names and id to this select-->
+                                <option value="view">风景</option>
+                                <option value="soccer">足球</option>
+                                <option value="basketball">篮球</option>
+                                <option value="girls">美女</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group no-space">
+                        <label class="control-label span6" for="postToFans">贴给所有粉丝</label>
+                        <div class="controls span6">
+                            <select id="postToFans" class="input-small">
+                                <option value="yes">是</option>
+                                <option value="no" selected="selected">否</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="span6 offset2">
+                    <div class="single-photo-descript-box">
+                        <span class="descript-arrow"></span>
+                        <textarea placeholder="添加描述" col="25" row="8" class="upload-descript-content" id="mark_description"></textarea>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-large" data-dismiss="modal" aria-hidden="true">取消设定</a>
+        <button type="submit" data-dismiss="modal" aria-hidden="true" class="btn btn-large btn-primary" onclick="finish_mark_people();">完成设定</button>
+    </div>
+</div>
+<script type='text/javascript' src="http://twitter.github.com/bootstrap/assets/js/bootstrap-typeahead.js"></script>
+<script type='text/javascript' src="../../View/resources/js/mention.js"></script>
+<script type='text/javascript' src="../../View/resources/js/jquery.tinylimiter.js"></script>
+<script src="../../View/resources/js/my_album/see_photos.js"></script>
+<script src="../../View/resources/js/my_album/comment.js"></script>
+<script>
+        $(function () {
+            $('#myTab a:last').tab('show');
+        })
+    </script>
+    <script type="text/javascript">
+    
+		
+        $(document).ready(function () {
+            $(".upload-remove-img").tooltip({
+                'trigger': 'hover',
+                'placement': 'top'
+            });
+            $('.upload-remove-img').click(function() {$(this).parents('.upload-img').fadeOut("slow",function(){$(this).remove()}); }); /*remove upload img*/
+            /*input limiter*/
+            var elem = $("#replyInputLimiter");
+            $("#replyInputBox").limiter(100, elem);
+        });
+        function imgUploadAtFriend(){
+             $('#selectImgAtFriend').click();
+        };
+        function imgUploadToAlbum(){
+            $('#selectImgToAlbum').click();
+        };
+    </script>
+
+</body>
+</html>

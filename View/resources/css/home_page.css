@@ -1,0 +1,25 @@
+#album
+{
+	width: 300px;
+	height: 700px;
+	margin-top: 200px;
+}
+#head_photo
+{
+	width: 300px;
+	height: 200px;
+}
+.album_style
+{
+	width: 100px;
+	height: 100px;
+	float: right;
+}
+#photos
+{
+	width: 900px;
+	height: 600px;
+	margin-left: 400px;
+	margin-top: -720px;
+	float: left;
+}

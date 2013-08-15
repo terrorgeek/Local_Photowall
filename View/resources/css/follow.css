@@ -1,0 +1,154 @@
+/* CSS login Document */
+html,
+body {
+    font-family:"微软雅黑 UI",Verdana,"宋体";
+	margin:0;
+	padding:0;
+	height:100%;
+	width:100%;
+}
+.wrapper {
+	min-height:100%;
+	position:relative;
+}
+p{
+	font-size:12px;
+	color:#666666;
+}
+h3{
+	font-size:1em;
+	color:#333;
+	display:inline;
+}
+a:link{
+	text-decoration: none;
+}
+a:hover p{
+	color:#991414;
+}
+.header{
+	height:200px;
+	background-image:url(../img/register_bkg.png);
+	background-repeat:repeat-x;
+	background-size:100% 200px;
+	margin:0px;
+	width: 100%;
+	position: fixed;
+	z-index: 1000;
+}
+
+.main_content{
+	display:block;
+	left:0;
+	top:50px;
+	height:auto;
+	width:900px;
+	margin-left:auto;
+	margin-right:auto;
+	padding-top: 200px;
+}
+/*-----------content--------starts----------------------------*/
+/*for friend_main.html starts*/
+.inner_content{
+	padding:30px 30px;
+	padding-bottom:50px;
+}
+.indent{
+	padding-left:30px;
+}
+.note{
+	color:#333;
+}
+/*for friend_main.html ends*/
+/*for follower.html starts*/
+.main_content .hr{
+    border: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0)); 
+	margin:0;
+}
+.list{
+	margin:30px 20px 20px 40px;
+}
+.list .tag{
+	background-image:url(../img/follower/tag.png);
+	background-repeat:no-repeat;
+	height:49px;
+	width:47px;
+	text-align:center;
+}
+.list h3{
+	color:#fff;
+}
+.list ul{
+	list-style:none;
+}
+.list li{
+	display: inline-block;
+	margin:10px;
+	text-align:center;
+}
+
+.list .profile_img_big{
+	height:128px;
+	width:160px;
+	vertical-align: middle;
+	cursor:pointer;
+}
+.list .profile_img_big img{
+	margin-top: 5px;
+}
+.list p{
+	cursor:pointer;
+}
+.list .list_action_button{
+	background-image:url(../img/follower/action_button.png);
+	height:29px;
+	width:73px;
+	display:inline-block;
+	cursor:pointer;
+}
+.hideV{
+	visibility:hidden;
+}
+.showV{
+	visibility:visible;
+}
+.list .list_action_button p{
+	margin:5px 0;
+}
+
+/*for follower.html ends*/
+/*for third_person_show_album.html starts*/
+.album-path h3{
+    color: #333;
+}
+/*for third_person_show_album.html ends*/
+
+
+/*-----------content--------ends----------------------------*/
+/*-----------footer--------starts----------------------------*/
+.footer{
+	display:block;
+	width:100%;
+	left:0;
+	height:80px;
+	margin:20px 0;
+}
+.copyright{
+	width:450px;
+	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+}
+.copyright p{
+	padding:0;
+	margin:0;
+}
+/*-----------footer--------ends----------------------------*/
+
+
